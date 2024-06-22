@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Image, Row, Col } from 'react-bootstrap';
+import { uploadFile } from "../Methods/config_img";
 
 function FormModal({ show, handleClose, id }) {
   // Estados para los campos del formulario y las imágenes seleccionadas
@@ -50,19 +51,21 @@ function FormModal({ show, handleClose, id }) {
 
   // Manejador del envío del formulario
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append('id', id);
-    formData.append('description', description);
-    formData.append('nombre', nombre);
-    files.forEach((file, index) => {
-    formData.append(`file_${index}`, file);
+    try {
+      // Subir los archivos y obtener las URLs de descarga
+      const uploadPromises = files.map((file, index) => uploadFile(file, `${id}_${index}`));
+      const urls = await Promise.all(uploadPromises);
+      
+      // Aquí puedes manejar las URLs obtenidas (ejemplo: enviarlas al servidor)
+      console.log('URLs de descarga:', urls);
 
-    });
-
-    // Manejar el envío del formulario aquí
-
-    clearForm();
-    handleClose();
+      // Limpiar el formulario y cerrar el modal
+      clearForm();
+      handleClose();
+    } catch (error) {
+      console.error('Error al subir archivos:', error);
+      alert('Ocurrió un error al subir las imágenes. Por favor, intenta de nuevo.');
+    }
   };
 
   // Cerrar el modal
