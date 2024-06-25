@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate d
 import { Col, Row } from "react-bootstrap"; // Importa los componentes Col y Row de react-bootstrap
 
 // Define el componente Home
-function Home ({ onLogout, isAdmin }) {
+function Home ({ onLogout, isAdmin}) {
     const navigate = useNavigate(); // Inicializa el hook useNavigate para la navegación
 
     // Función para manejar el cierre de sesión

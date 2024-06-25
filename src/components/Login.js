@@ -1,30 +1,40 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style/LoginStyle.css'; // Importa tu archivo CSS
+import fetchPost from '../Methods/FetchPost.js';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isAdminLogin, setIsAdminLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Lógica de autenticación
-    if (isAdminLogin) {
-      if (username === 'admin' && password === 'adminpassword') {
-        onLogin(true);
-        navigate('/home');
-      } else {
-        alert('Credenciales de administrador incorrectas');
-      }
-    } else {
-      if (username === 'user' && password === 'password') {
-        onLogin(false);
-        navigate('/home');
-      } else {
-        alert('Credenciales de usuario incorrectas');
-      }
+    setIsLoading(true); // Activar estado de carga
+
+    try {
+      const data = await fetchPost('https://mantenimientoautosbackend.onrender.com/user/login', {
+        nit: username,
+        contrasena: password
+      });
+
+      // Guardar token en localStorage
+      localStorage.setItem('token', data.token);
+
+      // Determinar si es administrador
+      const isAdmin = data.user.rol === 'admin';
+
+      // Llamar a la función onLogin con isAdmin
+      onLogin(isAdmin);
+
+      // Redireccionar a la página de inicio
+      navigate('/home');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      alert('Credenciales incorrectas o error de red');
+    } finally {
+      setIsLoading(false); // Desactivar estado de carga
     }
   };
 
@@ -39,9 +49,8 @@ const Login = ({ onLogin }) => {
               </div>
               <h6>REPORTES DE MANTENIMIENTO JCM S.A.S.</h6>
               <form onSubmit={handleLogin}>
-                {/* Input de username */}
                 <div className="form-group">
-                  <label htmlFor="username"/>
+                  <label htmlFor="username">Usuario</label>
                   <input
                     type="text"
                     className="form-control"
@@ -52,9 +61,8 @@ const Login = ({ onLogin }) => {
                     required
                   />
                 </div>
-                {/* Input de password */}
                 <div className="form-group">
-                  <label htmlFor="password"/>
+                  <label htmlFor="password">Contraseña</label>
                   <input
                     type="password"
                     className="form-control"
@@ -65,19 +73,16 @@ const Login = ({ onLogin }) => {
                     required
                   />
                 </div>
-                {/* Botón de login */}
-                <button type="submit" className={`btn btn-block ${isAdminLogin ? 'btn-danger' : 'btn-primary'}`}>
-                  {isAdminLogin ? 'Iniciar sesión como Administrador' : 'Iniciar sesión'}
+                <button type="submit" className="btn btn-block btn-primary" disabled={isLoading}>
+                  {isLoading ? (
+                    <div className="spinner-border text-light" role="status">
+                      <span className="sr-only">Cargando...</span>
+                    </div>
+                  ) : (
+                    'Iniciar sesión'
+                  )}
                 </button>
               </form>
-              <hr />
-              {/* Toggle para cambiar entre login de usuario y login de administrador */}
-              <button
-                className="btn btn-secondary btn-block"
-                onClick={() => setIsAdminLogin(!isAdminLogin)}
-              >
-                {isAdminLogin ? 'Cambiar a inicio' : 'Cambiar a Administrador'}
-              </button>
             </div>
           </div>
         </div>

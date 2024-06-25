@@ -15,10 +15,8 @@ function App() {
   useEffect(() => {
     // Verificar si hay una sesión activa en localStorage al cargar la aplicación
     const isLoggedIn = localStorage.getItem('isAuthenticated');
-    const storedIsAdmin = localStorage.getItem('isAdmin') === 'true';
     if (isLoggedIn) {
       setIsAuthenticated(true);
-      setIsAdmin(storedIsAdmin);
     }
   }, []); // Se ejecuta solo una vez al montar el componente
 
@@ -26,16 +24,11 @@ function App() {
   const handleAuthentication = (admin) => {
     setIsAuthenticated(true);
     setIsAdmin(admin);
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('isAdmin', admin);
   };
 
-  // Función para manejar el cierre de sesión
   const handleLogout = () => {
     setIsAuthenticated(false);
     setIsAdmin(false);
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('isAdmin');
   };
 
   return (
