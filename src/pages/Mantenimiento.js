@@ -16,7 +16,7 @@ function Mantenimiento({isAdmin}) {
   const [showModal, setShowModal] = useState(false);
   // Estado para almacenar el dato seleccionado
   const [selectedDato, setSelectedDato] = useState(null);
-
+ 
   // Obtener los datos de forma asíncrona
   useEffect(() => {
     const fetchDatos = async () => {
@@ -24,8 +24,8 @@ function Mantenimiento({isAdmin}) {
         const data = await fetchGet('https://jsonplaceholder.typicode.com/users');
 
         // Filtrar los datos si hay un dato específico
-        if (dato && dato.id) {
-          const filteredData = data.filter(item => item.id === dato.id);
+        if (dato && dato.placa) {
+          const filteredData = data.filter(item => item === dato.placa);
           setDatos(filteredData);
         } else {
           setDatos(data);
@@ -53,7 +53,7 @@ function Mantenimiento({isAdmin}) {
   // Función para manejar la verificación del dato
   const handleVerifyClick = (dato) => {
     setDatos(prevDatos => prevDatos.map(item =>
-      item.id === dato.id ? { ...item, isVerified: !item.isVerified } : item
+      item.id === dato.item ? { ...item, isVerified: !item.isVerified } : item
     ));
   };
 
@@ -63,8 +63,9 @@ function Mantenimiento({isAdmin}) {
       {dato && (
         <div>
           {dato.url && <div className='d-flex justify-content-center mt-3' style={{ maxHeight: '300px', width: '100%' }}><Image className='img-fluid' src={dato.url} alt="Imagen" /> </div>}
-          {dato.title && <h3 className='d-flex justify-content-center m-2 p-4'>{dato.title}</h3>}
-          {dato.thumbnailUrl && <p className='d-flex justify-content-center'>{dato.thumbnailUrl}</p>}
+          {dato.marca && <h3 className='d-flex justify-content-center m-2 p-4'>{dato.equipo} {dato.marca}</h3>}
+          {dato.placa && <p className='d-flex justify-content-center'>Placa: {dato.placa}, {dato.modelo}</p>}
+          {dato.linea && <p className='d-flex justify-content-center'>{dato.linea}</p>}
         </div>
       )}
       <h4 className='d-flex justify-content-center'>Lista de reportes</h4>

@@ -57,7 +57,7 @@ function FormModal({ show, handleClose, id }) {
       const urls = await Promise.all(uploadPromises);
       
       // Aquí puedes manejar las URLs obtenidas (ejemplo: enviarlas al servidor)
-      console.log('URLs de descarga:', urls);
+      console.log('URLs de descarga:', urls); // esta url debemos guardarla en la imagen
 
       // Limpiar el formulario y cerrar el modal
       clearForm();
@@ -77,7 +77,7 @@ function FormModal({ show, handleClose, id }) {
   return (
     <Modal show={show} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Añadir Reporte {id}</Modal.Title>
+        <Modal.Title>Añadir Reporte, placa: {id}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>

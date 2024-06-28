@@ -14,7 +14,8 @@ const firebaseConfig = {
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
-export const storage = getStorage(app);
+export const storage = getStorage(app); // Este objeto nos permite interactuar con las imagenes
+
 
 /**
  * 

@@ -33,7 +33,7 @@ function Home ({ onLogout, isAdmin}) {
             </Row>
 
             {/* Componente Naipes con la URL proporcionada */}
-            <Naipes url="https://jsonplaceholder.typicode.com/photos"/>
+            <Naipes url="https://mantenimientoautosbackend.onrender.com/vehiculos/getAll"/>
         </>
     )
 }

@@ -10,15 +10,16 @@ function Cards({ currentItems, handleShowModal, handleRepairClick, showVerButton
     <Row> 
       {/* Mapeo de los items para mostrar las tarjetas */}
       {currentItems.map((dato) => (
-        <Col sm={12} md={6} lg={4} xl={3} key={dato.id} className="d-flex justify-content-center mb-4">
+        <Col sm={12} md={6} lg={4} xl={3} key={dato.item} className="d-flex justify-content-center mb-4">
           <Card style={{ width: '18rem' }} className='mt-5 p-3'>
             {/* Mostrar la imagen del auto */}
-            <Card.Img variant="top" src={dato.thumbnailUrl} alt='Car'/>
+            <Card.Img variant="top" src='https://firebasestorage.googleapis.com/v0/b/images-6d562.appspot.com/o/images_mantenimiento%2Fcarros%2Fimgprueba.jpg?alt=media&token=072cadc5-8c59-4168-bd74-30935a4d3acf' alt='Imagen carro'/>
             <Card.Body>
               {/* Mostrar el nombre del auto */}
-              <Card.Title>{dato.title || dato.name}</Card.Title>
+              <Card.Title>{dato.equipo} {dato.marca}</Card.Title>
               {/* Mostrar la descripción del carro */}
-              <Card.Text>{dato[dataFields.text]}</Card.Text>
+              <Card.Text>Placa: {dato.placa}, {dato.modelo}</Card.Text>
+              <Card.Text>Linea: {dato.linea}</Card.Text>
               {/* Mostrar botones según las props */}
               <Row>
                 {showVerButton && (

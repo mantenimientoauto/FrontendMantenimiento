@@ -58,7 +58,7 @@ function Naipes({ url }) {
 
   useEffect(() => {
     const filtered = datos.filter(dato => {
-      const titleMatch = dato.title?.toLowerCase().includes(searchQuery.toLowerCase());
+      const titleMatch = dato.marca?.toLowerCase().includes(searchQuery.toLowerCase());
       const idMatch = dato.id?.toString().includes(searchQuery);
       return titleMatch || idMatch;
     });
@@ -95,7 +95,7 @@ function Naipes({ url }) {
         onPageChange={handlePageChange}
       />
       {selectedDato && (
-        <FormModal show={showModal} handleClose={handleCloseModal} id={selectedDato.id} />
+        <FormModal show={showModal} handleClose={handleCloseModal} id={selectedDato.placa} />
       )}
     </div>
   );
