@@ -24,9 +24,9 @@ export const storage = getStorage(app); // Este objeto nos permite interactuar c
  * @returns  url_img  para la descarga del archivo
  */
 // Función para subir un archivo a Firebase Storage
-export async function uploadFile(file, id) {
+export async function uploadFile(file, id,nombre) {
   // Convertir el id a una cadena de texto si es numérico
-  const stringId = id.toString();
+  const stringId = id.toString()+nombre;
 
   // Crear una referencia de almacenamiento usando el id
   const storageRef = ref(storage, stringId);

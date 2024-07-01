@@ -10,16 +10,17 @@ function Cards({ currentItems, handleShowModal, handleRepairClick, showVerButton
     <Row> 
       {/* Mapeo de los items para mostrar las tarjetas */}
       {currentItems.map((dato) => (
-        <Col sm={12} md={6} lg={4} xl={3} key={dato.item} className="d-flex justify-content-center mb-4">
+        <Col sm={12} md={6} lg={4} xl={3} key={dato.vehiculo_placa} className="d-flex justify-content-center mb-4">
           <Card style={{ width: '18rem' }} className='mt-5 p-3'>
             {/* Mostrar la imagen del auto */}
-            <Card.Img variant="top" src='https://firebasestorage.googleapis.com/v0/b/images-6d562.appspot.com/o/images_mantenimiento%2Fcarros%2Fimgprueba.jpg?alt=media&token=072cadc5-8c59-4168-bd74-30935a4d3acf' alt='Imagen carro'/>
+            <Card.Img variant="top" src={dato.dir_img||dato.url_before} alt='Imagen carro'/>
             <Card.Body>
               {/* Mostrar el nombre del auto */}
               <Card.Title>{dato.equipo} {dato.marca}</Card.Title>
               {/* Mostrar la descripción del carro */}
-              <Card.Text>Placa: {dato.placa}, {dato.modelo}</Card.Text>
-              <Card.Text>Linea: {dato.linea}</Card.Text>
+              <Card.Text>{dato.placa ? `Placa: ${dato.placa}, ${dato.modelo}`:`${dato.nombre}`}</Card.Text>
+              <Card.Text>{dato.linea ? `Linea: ${dato.linea}`: `Detalle: ${dato.detalles}`}</Card.Text>
+              <Card.Text>{dato.fecha_registro ? `Fecha: ${dato.fecha_registro}`: ` `}</Card.Text>
               {/* Mostrar botones según las props */}
               <Row>
                 {showVerButton && (

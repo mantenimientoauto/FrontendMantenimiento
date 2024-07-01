@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { Modal, Button, Form, Image, Row, Col } from 'react-bootstrap';
 
 function FormVerificado({ show, handleClose, id }) {
@@ -6,6 +6,7 @@ function FormVerificado({ show, handleClose, id }) {
   const [nombre, setNombre] = useState('');
   const [files, setFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value); 

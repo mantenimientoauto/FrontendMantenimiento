@@ -19,14 +19,10 @@ const Login = ({ onLogin }) => {
         contrasena: password
       });
 
-      // Guardar token en localStorage
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.token); // Guardar token en localStorage
 
-      // Determinar si es administrador
-      const isAdmin = data.user.rol === 'admin';
-
-      // Llamar a la función onLogin con isAdmin
-      onLogin(isAdmin);
+      const isAdmin = data.user.rol === 'admin'; // Determinar si es administrador
+      onLogin(isAdmin); // Llamar a la función onLogin con isAdmin
 
       // Redireccionar a la página de inicio
       navigate('/home');

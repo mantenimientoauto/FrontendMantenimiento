@@ -6,37 +6,34 @@ import Image from 'react-bootstrap/Image';
 import FormVerificado from '../components/FormVerificado';
 
 function Mantenimiento({isAdmin}) {
-  // Obtener la ubicación actual
-  const location = useLocation();
-  // Obtener el dato del estado de la ubicación o establecerlo como un objeto vacío si no está definido
-  const { dato } = location.state || {};
-  // Estado para almacenar los reportes hechos para este auto
-  const [datos, setDatos] = useState([]);
-  // Estado para controlar la visibilidad del modal
-  const [showModal, setShowModal] = useState(false);
-  // Estado para almacenar el dato seleccionado
-  const [selectedDato, setSelectedDato] = useState(null);
  
+  const location = useLocation(); // Obtener la ubicación actual
+  const { dato } = location.state || {};// Obtener el dato del estado de la ubicación
+  const [showModal, setShowModal] = useState(false);// Estado para controlar la visibilidad del modal
+  const [selectedDato, setSelectedDato] = useState(null);// Estado para almacenar los reportes hechos
+  const [reports, setReports] = useState([]);
+
   // Obtener los datos de forma asíncrona
   useEffect(() => {
-    const fetchDatos = async () => {
-      try {
-        const data = await fetchGet('https://jsonplaceholder.typicode.com/users');
+    if (dato.placa) {
+      fetchReports(dato.placa); // Llamar a la función para obtener los reportes por la placa (id)
+    }
+  }, [dato.placa]);
 
-        // Filtrar los datos si hay un dato específico
-        if (dato && dato.placa) {
-          const filteredData = data.filter(item => item === dato.placa);
-          setDatos(filteredData);
+    // Función para obtener los reportes por la placa
+    const fetchReports = async (placa) => {
+
+      try {
+        const response = await fetchGet(`https://mantenimientoautosbackend.onrender.com/mantenimientos/registros/${placa}`);
+        if (response) {
+          setReports(response); // Almacenar los reportes en el estado local
         } else {
-          setDatos(data);
+          console.error('Error al obtener los reportes');
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error al obtener los reportes:', error);
       }
     };
-
-    fetchDatos();
-  }, [dato]);
 
   // Función para mostrar el modal con el dato seleccionado
   const handleShowModal = (dato) => {
@@ -51,10 +48,11 @@ function Mantenimiento({isAdmin}) {
   };
 
   // Función para manejar la verificación del dato
-  const handleVerifyClick = (dato) => {
-    setDatos(prevDatos => prevDatos.map(item =>
-      item.id === dato.item ? { ...item, isVerified: !item.isVerified } : item
-    ));
+  const handleVerifyClick = () => {
+    console.log("verificado")
+    // setDatos(prevDatos => prevDatos.map(item =>
+    //   item.id === dato.item ? { ...item, isVerified: !item.isVerified } : item
+    // ));
   };
 
   return (
@@ -62,8 +60,8 @@ function Mantenimiento({isAdmin}) {
       {/* Mostrar la imagen, el título y la miniatura del dato si están disponibles */}
       {dato && (
         <div>
-          {dato.url && <div className='d-flex justify-content-center mt-3' style={{ maxHeight: '300px', width: '100%' }}><Image className='img-fluid' src={dato.url} alt="Imagen" /> </div>}
           {dato.marca && <h3 className='d-flex justify-content-center m-2 p-4'>{dato.equipo} {dato.marca}</h3>}
+          {dato.dir_img && <div className='d-flex justify-content-center mt-3' style={{ maxHeight: '300px', width: '100%' }}><Image className='img-fluid' src={dato.dir_img} alt="Imagen" /> </div>}
           {dato.placa && <p className='d-flex justify-content-center'>Placa: {dato.placa}, {dato.modelo}</p>}
           {dato.linea && <p className='d-flex justify-content-center'>{dato.linea}</p>}
         </div>
@@ -71,7 +69,7 @@ function Mantenimiento({isAdmin}) {
       <h4 className='d-flex justify-content-center'>Lista de reportes</h4>
       {/* Renderizar los Cards con los datos */}
       <Cards 
-        currentItems={datos} 
+        currentItems={reports} 
         handleShowModal={handleShowModal}
         handleRepairClick={handleVerifyClick}
         showVerButton={isAdmin}
