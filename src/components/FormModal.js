@@ -41,7 +41,7 @@ function FormModal({ show, handleClose, id }) {
   // Manejador del envío del formulario
   const handleSubmit = async () => {
     try {
-      const urls_before = await uploadFile(files, id, nombre); // Subir los archivos y obtener las URLs de descarga
+      const urls_before = await uploadFile(files); // Subir los archivos y obtener las URLs de descarga
 
       // Datos para enviar al backend
       const reportData = {

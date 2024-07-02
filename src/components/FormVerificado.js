@@ -1,12 +1,14 @@
 import React, { useState} from 'react';
 import { Modal, Button, Form, Image, Row, Col } from 'react-bootstrap';
+import { uploadFile } from "../Methods/config_img";
+import fetchPut from '../Methods/FetchPut';
+
 
 function FormVerificado({ show, handleClose, id }) {
   const [description, setDescription] = useState('');
   const [nombre, setNombre] = useState('');
-  const [files, setFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
-
+  const [files, setFiles] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState(null);
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value); 
@@ -16,50 +18,55 @@ function FormVerificado({ show, handleClose, id }) {
     setNombre(e.target.value);
   };
 
+  // Manejador de cambio de archivo seleccionado
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    // Limitar la cantidad de imágenes seleccionadas a 3
-    if (selectedFiles.length + files.length > 3) {
-      alert('Solo puedes subir un máximo de 3 imágenes.');
-      return;
-    }
+    const selectedFiles = e.target.files[0];
+    if (selectedFiles) {
+      setFiles(selectedFiles);
 
-    setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
-
-    const previews = selectedFiles.map(file => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return new Promise(resolve => {
-        reader.onload = () => resolve(reader.result);
-      });
-    });
-
-    Promise.all(previews).then(images => {
-      setImagePreviews(prevPreviews => [...prevPreviews, ...images]);
-    });
+      reader.readAsDataURL(selectedFiles);
+      reader.onload = () => {
+        setImagePreviews(reader.result);
+      };
+    }
   };
-
+  // Limpiar los campos del formulario
   const clearForm = () => {
-    setImagePreviews([]);
-    setFiles([]);
+    setImagePreviews(null);
+    setFiles(null);
     setDescription('');
     setNombre('');
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append('id', id)
-    formData.append('description', description);
-    formData.append('nombre', nombre);
-    files.forEach((file, index) => {
-      formData.append(`file_${index}`, file);
-    });
+    try {
+      const urls_after = await uploadFile(files);
 
-    // Manejar el envío del formulario aquí
+      const reportverificado = {
+        sugerencia: description,
+        url_after: urls_after,
+        nom_tecnico: nombre
+      };
 
-    clearForm();
-    handleClose();
-  }
+      await updateState(id, reportverificado);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error al enviar el mantenimiento:', error);
+    }
+  };
+    // Función para manejar la verificación del dato
+  const updateState = async (id, reportverificado) => {
+      try { 
+        const url = `https://mantenimientoautosbackend.onrender.com/mantenimientos/updateState/${id}`;
+        const updatedDato = await fetchPut(url, reportverificado);
+        if (updatedDato) {
+          console.log('Envio Exitoso');
+        }
+      } catch (error) {
+        console.error('Error al actualizar el estado del reporte:', error);
+      }
+    };
 
   const handleCloseModal = () => {
     clearForm();
@@ -75,41 +82,34 @@ function FormVerificado({ show, handleClose, id }) {
         <Form>
           {/* Campos del formulario */}
           <Form.Group controlId="formNombre" className="mb-3">
-            <Form.Label>Carro</Form.Label>
+            <Form.Label>Técnico de mantenimiento</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Titulo del problema"
+              placeholder="Nombre"
               value={nombre}
               onChange={handleNombreChange}
             />
           </Form.Group>
           <Form.Group controlId="formDescription" className="mb-3">
-            <Form.Label>Descripción del reporte</Form.Label>
+            <Form.Label>Descripción del mantenimiento</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
-              placeholder="Ingrese texto"
+              placeholder="Ingrese mantenimiento"
               value={description}
               onChange={handleDescriptionChange}
             />
           </Form.Group>
           <Form.Group controlId="formFiles" className="mb-3">
-            <Form.Label>Adjuntar imágenes (máximo 3)</Form.Label>
-            <Form.Control
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFileChange}
-            />
+            <Form.Label>Adjuntar imagen (máximo 1)</Form.Label>
+            <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
           </Form.Group>
-          {/* Mostrar imágenes seleccionadas */}
-          {imagePreviews.length > 0 && (
+          {/* Mostrar imagen seleccionada */}
+          {imagePreviews && (
             <Row className="mb-3 text-center">
-              {imagePreviews.map((preview, index) => (
-                <Col key={index} xs={4} className="mb-2">
-                  <Image src={preview} alt={`evidence-${index}`} fluid thumbnail />
-                </Col>
-              ))}
+              <Col xs={4} className="mb-2">
+                <Image src={imagePreviews} alt='' fluid thumbnail />
+              </Col>
             </Row>
           )}
         </Form>
@@ -120,7 +120,7 @@ function FormVerificado({ show, handleClose, id }) {
           Cerrar
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
-          Enviar reporte
+          Enviar Mantenimiento
         </Button>
       </Modal.Footer>
     </Modal>

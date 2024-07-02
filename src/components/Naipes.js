@@ -18,7 +18,7 @@ function Naipes({ url }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     const fetchDatos = async () => {
       try {
@@ -59,8 +59,9 @@ function Naipes({ url }) {
   useEffect(() => {
     const filtered = datos.filter(dato => {
       const titleMatch = dato.marca?.toLowerCase().includes(searchQuery.toLowerCase());
-      const idMatch = dato.id?.toString().includes(searchQuery);
-      return titleMatch || idMatch;
+      const idMatch = dato.placa?.toString().toLowerCase().includes(searchQuery.toLowerCase());
+      const linea = dato.linea?.toString().toLowerCase().includes(searchQuery.toLowerCase());
+      return titleMatch || idMatch || linea;
     });
     setFilteredDatos(filtered);
     setCurrentPage(1);

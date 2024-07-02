@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import fetchGet from '../Methods/FetchGet';
+import fetchPut from '../Methods/FetchPut';
 import Cards from '../components/Cards';
 import Image from 'react-bootstrap/Image';
 import FormVerificado from '../components/FormVerificado';
+
 
 function Mantenimiento({isAdmin}) {
  
   const location = useLocation(); // Obtener la ubicación actual
   const { dato } = location.state || {};// Obtener el dato del estado de la ubicación
   const [showModal, setShowModal] = useState(false);// Estado para controlar la visibilidad del modal
-  const [selectedDato, setSelectedDato] = useState(null);// Estado para almacenar los reportes hechos
   const [reports, setReports] = useState([]);
+  const [selectedDato, setSelectedDato] = useState(null); 
 
   // Obtener los datos de forma asíncrona
   useEffect(() => {
@@ -22,7 +24,6 @@ function Mantenimiento({isAdmin}) {
 
     // Función para obtener los reportes por la placa
     const fetchReports = async (placa) => {
-
       try {
         const response = await fetchGet(`https://mantenimientoautosbackend.onrender.com/mantenimientos/registros/${placa}`);
         if (response) {
@@ -36,6 +37,7 @@ function Mantenimiento({isAdmin}) {
     };
 
   // Función para mostrar el modal con el dato seleccionado
+  // Función para mostrar el modal con el dato seleccionado
   const handleShowModal = (dato) => {
     setSelectedDato(dato);
     setShowModal(true);
@@ -44,15 +46,25 @@ function Mantenimiento({isAdmin}) {
   // Función para cerrar el modal y limpiar el dato seleccionado
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedDato(null);
   };
 
   // Función para manejar la verificación del dato
-  const handleVerifyClick = () => {
-    console.log("verificado")
-    // setDatos(prevDatos => prevDatos.map(item =>
-    //   item.id === dato.item ? { ...item, isVerified: !item.isVerified } : item
-    // ));
+  const handleVerifyClick = async (id) => {
+    try { 
+      const url = `https://mantenimientoautosbackend.onrender.com/mantenimientos/updateState/${id}`;
+      const updatedDato = await fetchPut(url, { estado: true });
+      if (updatedDato) {
+        // Actualizar el estado local para reflejar el cambio
+        setReports((prevItems) =>
+          prevItems.map((item) =>
+            item.id === updatedDato.id ? updatedDato : item
+          )
+        );
+        console.log('Envio Exitoso');
+      }
+    } catch (error) {
+      console.error('Error al actualizar el estado del reporte:', error);
+    }
   };
 
   return (
@@ -74,7 +86,6 @@ function Mantenimiento({isAdmin}) {
         handleRepairClick={handleVerifyClick}
         showVerButton={isAdmin}
         showAddButton={true}
-        dataFields={{ text: 'email' }}
         isHome={false}
       />
       {/* Mostrar el formulario verificado si hay un dato seleccionado */}
