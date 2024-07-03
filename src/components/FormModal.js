@@ -41,7 +41,19 @@ function FormModal({ show, handleClose, id }) {
   // Manejador del envío del formulario
   const handleSubmit = async () => {
     try {
+      // Validar si hay archivos para subir
+      if (!files || files.length === 0) {
+        alert('Por favor selecciona al menos un archivo para subir.');
+        return;
+      }
+
       const urls_before = await uploadFile(files); // Subir los archivos y obtener las URLs de descarga
+
+      // Validar otros datos necesarios antes de enviar al backend
+      if (!description || !id || !nombre) {
+        alert('Por favor completa todos los campos obligatorios.');
+        return;
+      }
 
       // Datos para enviar al backend
       const reportData = {
@@ -55,10 +67,9 @@ function FormModal({ show, handleClose, id }) {
         nombre: nombre
       };
 
-
       const response = await fetchPost('https://mantenimientoautosbackend.onrender.com/mantenimientos/AddRegister', reportData);
 
-      if (response) {
+      if (response.ok) {
         console.log('Reporte enviado con éxito:');
         handleClose();
         clearForm(); // Limpiar el formulario y cerrar el modal
@@ -72,7 +83,6 @@ function FormModal({ show, handleClose, id }) {
       alert('Ocurrió un error al subir las imágenes. Por favor, intenta de nuevo.');
     }
   };
-
   // Cerrar el modal
   const handleCloseModal = () => {
     clearForm();

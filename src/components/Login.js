@@ -1,36 +1,37 @@
-import React, { useState } from 'react';
+// src/components/Login.js
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './style/LoginStyle.css'; // Importa tu archivo CSS
+import './style/LoginStyle.css';
 import fetchPost from '../Methods/FetchPost.js';
+import { AuthContext } from '../context/AuthContext';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Estado de carga
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { handleAuthentication } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Activar estado de carga
+    setIsLoading(true);
 
     try {
       const data = await fetchPost('https://mantenimientoautosbackend.onrender.com/user/login', {
         nit: username,
         contrasena: password
       });
-
-      localStorage.setItem('token', data.token); // Guardar token en localStorage
-
-      const isAdmin = data.user.rol === 'admin'; // Determinar si es administrador
-      onLogin(isAdmin); // Llamar a la función onLogin con isAdmin
-
-      // Redireccionar a la página de inicio
+    
+      localStorage.setItem('token', data.token); //
+      const isAdmin = data.user.rol === 'admin';
+      handleAuthentication(isAdmin);
       navigate('/home');
+      
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       alert('Credenciales incorrectas o error de red');
     } finally {
-      setIsLoading(false); // Desactivar estado de carga
+      setIsLoading(false);
     }
   };
 

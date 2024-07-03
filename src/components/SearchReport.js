@@ -40,7 +40,7 @@ function SearchReport({ onSearch }) {
               />
             </Col>
             <Col xs={2}>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Buscar</Button>
             </Col>
           </Row>
         </Form>

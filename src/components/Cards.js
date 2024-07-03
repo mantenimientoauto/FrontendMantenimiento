@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 // La función Cards recibe varios datos ya que está renderizando tanto los autos como los reportes
-function Cards({ currentItems, handleShowModal, handleRepairClick, showVerButton, showAddButton, isHome}) {
+function Cards({ currentItems, handleShowModal, handleRepairClick, showVerButton, showAddButton, isHome, reportsCount}) {
 
   return (
     <Row> 

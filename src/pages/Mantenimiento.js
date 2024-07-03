@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import { useLocation } from 'react-router-dom';
 import fetchGet from '../Methods/FetchGet';
 import fetchPut from '../Methods/FetchPut';
 import Cards from '../components/Cards';
 import Image from 'react-bootstrap/Image';
 import FormVerificado from '../components/FormVerificado';
+import { AuthContext } from '../context/AuthContext';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import formatDate from '../Methods/formattedDate';
 
 
-function Mantenimiento({isAdmin}) {
+function Mantenimiento() {
  
   const location = useLocation(); // Obtener la ubicación actual
   const { dato } = location.state || {};// Obtener el dato del estado de la ubicación
   const [showModal, setShowModal] = useState(false);// Estado para controlar la visibilidad del modal
   const [reports, setReports] = useState([]);
   const [selectedDato, setSelectedDato] = useState(null); 
+  const { isAdmin } = useContext(AuthContext);
 
   // Obtener los datos de forma asíncrona
   useEffect(() => {
@@ -21,13 +26,16 @@ function Mantenimiento({isAdmin}) {
       fetchReports(dato.placa); // Llamar a la función para obtener los reportes por la placa (id)
     }
   }, [dato.placa]);
+ 
 
     // Función para obtener los reportes por la placa
     const fetchReports = async (placa) => {
       try {
         const response = await fetchGet(`https://mantenimientoautosbackend.onrender.com/mantenimientos/registros/${placa}`);
         if (response) {
-          setReports(response); // Almacenar los reportes en el estado local
+
+          setReports(response); // Almacenar los reportes en el estado local    
+
         } else {
           console.error('Error al obtener los reportes');
         }
@@ -37,7 +45,6 @@ function Mantenimiento({isAdmin}) {
     };
 
   // Función para mostrar el modal con el dato seleccionado
-  // Función para mostrar el modal con el dato seleccionado
   const handleShowModal = (dato) => {
     setSelectedDato(dato);
     setShowModal(true);
@@ -46,6 +53,7 @@ function Mantenimiento({isAdmin}) {
   // Función para cerrar el modal y limpiar el dato seleccionado
   const handleCloseModal = () => {
     setShowModal(false);
+    fetchReports(dato.placa); // Esto garantiza que los datos se actualicen después de cada acción de actualización
   };
 
   // Función para manejar la verificación del dato
@@ -55,17 +63,44 @@ function Mantenimiento({isAdmin}) {
       const updatedDato = await fetchPut(url, { estado: true });
       if (updatedDato) {
         // Actualizar el estado local para reflejar el cambio
-        setReports((prevItems) =>
-          prevItems.map((item) =>
-            item.id === updatedDato.id ? updatedDato : item
+        setReports((prevReports) =>
+          prevReports.map((report) =>
+            report.id === updatedDato.id ? updatedDato : report
           )
         );
-        console.log('Envio Exitoso');
+        console.log('Actualización exitosa del estado del reporte');
       }
     } catch (error) {
       console.error('Error al actualizar el estado del reporte:', error);
     }
   };
+
+    // Función para descargar los reportes en PDF
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+  
+    // Configurar la tabla para el PDF
+    const tableColumn = ['Titulo', 'Descripción','Solución','Tecnico', 'Estado','Fecha'];
+      
+    const tableRows = reports.map(report => [
+        
+        report.nombre,
+        report.detalles,
+        report.sugerencia,
+        report.nom_tecnico,
+        report.estado ? 'Verificado' : 'No Verificado',
+        formatDate(report.fecha_registro)
+      ]);
+
+            // Agregar la tabla al documento PDF
+    doc.autoTable({
+        head: [tableColumn],
+        body: tableRows
+      });
+
+      // Descargar el archivo PDF con un nombre específico
+      doc.save(`reportes_${dato.placa}.pdf`);
+    };
 
   return (
     <div>
@@ -78,8 +113,13 @@ function Mantenimiento({isAdmin}) {
           {dato.linea && <p className='d-flex justify-content-center'>{dato.linea}</p>}
         </div>
       )}
+
       <h4 className='d-flex justify-content-center'>Lista de reportes</h4>
       {/* Renderizar los Cards con los datos */}
+      {/* Botón para descargar reportes en PDF */}
+      <div className='d-flex justify-content-center mb-3'>
+        <button className='btn btn-primary mx-2' onClick={downloadPDF}>Descargar PDF</button>
+      </div>
       <Cards 
         currentItems={reports} 
         handleShowModal={handleShowModal}
@@ -87,6 +127,9 @@ function Mantenimiento({isAdmin}) {
         showVerButton={isAdmin}
         showAddButton={true}
         isHome={false}
+        totalReports = {null}
+        verifiedReports = {null}
+
       />
       {/* Mostrar el formulario verificado si hay un dato seleccionado */}
       {selectedDato && (
