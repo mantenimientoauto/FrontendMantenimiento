@@ -39,7 +39,7 @@ const Login = () => {
     <div className="login-background d-flex align-items-center justify-content-center">
       <div className="row">
         <div className="col-md-12">
-          <div className="card custom-gray">
+          <div className="card custom-gray shadow-lg p-3 mb-5 bg-white rounded">
             <div className="card-body">
               <div className='d-flex justify-content-center mt-1 pb-4'>
                 <img src="https://i.imgur.com/DzS1R1X.jpg" alt='Logo' className='custom-size' />

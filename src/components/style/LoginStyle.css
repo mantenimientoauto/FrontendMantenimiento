@@ -3,7 +3,7 @@
   }
 
 .login-background {
-    background-image: url('https://i.imgur.com/DzS1R1X.jpg'); /* Ruta a tu imagen de fondo */
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/images-6d562.appspot.com/o/images_mantenimiento%2Fcollage.jpg?alt=media&token=cfd40277-6431-42cd-b4f3-00e0d2beec34'); /* Ruta a tu imagen de fondo */
     background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
     background-position: center; /* Centra la imagen */
     height: 100vh; /* Asegura que el fondo cubra toda la pantalla */

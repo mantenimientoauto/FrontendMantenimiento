@@ -35,7 +35,7 @@ function SearchReport({ onSearch }) {
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                placeholder="Search"
+                placeholder="Ingresar placa, linea"
                 className="mr-sm-2"
               />
             </Col>

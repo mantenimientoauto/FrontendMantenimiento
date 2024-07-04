@@ -22,9 +22,9 @@ const AuthProvider = ({ children }) => {
 
   const handleAuthentication = (isAdmin) => {
     setIsAuthenticated(true);
-    setIsAdmin(isAdmin.toString());
+    setIsAdmin(isAdmin);
     localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('isAdmin', isAdmin.toString());
+    localStorage.setItem('isAdmin', isAdmin);
   };
 
   const handleLogout = () => {

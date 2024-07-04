@@ -9,6 +9,7 @@ import { AuthContext } from '../context/AuthContext';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import formatDate from '../Methods/formattedDate';
+import { Container } from 'react-bootstrap';
 
 
 function Mantenimiento() {
@@ -103,6 +104,7 @@ function Mantenimiento() {
     };
 
   return (
+    <Container>
     <div>
       {/* Mostrar la imagen, el título y la miniatura del dato si están disponibles */}
       {dato && (
@@ -136,6 +138,7 @@ function Mantenimiento() {
         <FormVerificado show={showModal} handleClose={handleCloseModal} id={selectedDato.id} />
       )}
     </div>
+    </Container>
   );
 }
 

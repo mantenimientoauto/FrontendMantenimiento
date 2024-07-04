@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap'; // Importa el componente Button de rea
 import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate de react-router-dom
 import { Col, Row } from "react-bootstrap"; // Importa los componentes Col y Row de react-bootstrap
 import { AuthContext } from '../context/AuthContext';
+import { Container } from 'react-bootstrap';
 
 // Define el componente Home
 function Home () {
@@ -18,7 +19,7 @@ function Home () {
     };
 
     return (
-        <>  
+        <Container>  
             {/* Contenedor de la fila */}
             <Row>
                 {/* Columna para el botón de cierre de sesión */}
@@ -31,14 +32,14 @@ function Home () {
                 {/* Columna para mostrar si es administrador */}
                 <Col sm={12} md={2} className="d-flex justify-content-center">
                     {/* Condición para mostrar si es administrador */}
-                    {isAdmin ? <p className="fs-5 m-3 pt-2 fw-semibold text-wrap">Administrador</p>: null}
+                    {isAdmin && <p className="fs-5 m-3 pt-2 fw-semibold text-wrap">Administrador</p>}
 
                 </Col>
             </Row>
 
             {/* Componente Naipes con la URL proporcionada */}
             <Naipes url="https://mantenimientoautosbackend.onrender.com/vehiculos/getAll"/>
-        </>
+        </Container>
     )
 }
 
