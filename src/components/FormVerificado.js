@@ -52,7 +52,7 @@ function FormVerificado({ show, handleClose, id }) {
       await updateState(id, reportverificado);
       handleCloseModal();
     } catch (error) {
-      console.error('Error al enviar el mantenimiento:', error);
+      alert('Ocurrió un error al subir las imágenes. Por favor, intenta de nuevo.');
     }
   };
     // Función para manejar la verificación del dato
@@ -61,10 +61,10 @@ function FormVerificado({ show, handleClose, id }) {
         const url = `https://mantenimientoautosbackend.onrender.com/mantenimientos/updateState/${id}`;
         const updatedDato = await fetchPut(url, reportverificado);
         if (updatedDato) {
-          console.log('Envio Exitoso');
+          
         }
       } catch (error) {
-        console.error('Error al actualizar el estado del reporte:', error);
+        alert.error('Error al actualizar el estado del reporte:', error);
       }
     };
 

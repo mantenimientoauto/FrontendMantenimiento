@@ -29,21 +29,20 @@ function Mantenimiento() {
   }, [dato.placa]);
  
 
-    // Función para obtener los reportes por la placa
-    const fetchReports = async (placa) => {
-      try {
-        const response = await fetchGet(`https://mantenimientoautosbackend.onrender.com/mantenimientos/registros/${placa}`);
-        if (response) {
-
-          setReports(response); // Almacenar los reportes en el estado local    
-
-        } else {
-          console.error('Error al obtener los reportes');
-        }
-      } catch (error) {
-        console.error('Error al obtener los reportes:', error);
+  const fetchReports = async (placa) => {
+    try {
+      const response = await fetchGet(`https://mantenimientoautosbackend.onrender.com/mantenimientos/registros/${placa}`);
+      
+      if (response.length === 0) {
+        setReports([]); // Establecer un array vacío en el estado local
+      } else {
+        setReports(response); // Almacenar los reportes en el estado local
       }
-    };
+    } catch (error) {
+      // Manejo de errores adicionales, como mostrar un mensaje al usuario o realizar acciones específicas
+      setReports([]); // En caso de error, establecer un array vacío en el estado local
+    }
+  };
 
   // Función para mostrar el modal con el dato seleccionado
   const handleShowModal = (dato) => {
@@ -69,10 +68,9 @@ function Mantenimiento() {
             report.id === updatedDato.id ? updatedDato : report
           )
         );
-        console.log('Actualización exitosa del estado del reporte');
       }
     } catch (error) {
-      console.error('Error al actualizar el estado del reporte:', error);
+      throw error;
     }
   };
 

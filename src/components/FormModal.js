@@ -10,6 +10,7 @@ function FormModal({ show, handleClose, id }) {
   const [nombre, setNombre] = useState('');
   const [files, setFiles] = useState(null);
   const [imagePreviews, setImagePreviews] = useState(null);
+  const user = localStorage.getItem('nombre')
 
   // Manejadores de cambios en los campos del formulario
   const handleDescriptionChange = (e) => {
@@ -60,7 +61,7 @@ function FormModal({ show, handleClose, id }) {
       const reportData = {
         detalles: description,
         vehiculo_placa: id,
-        usuario_nit: "usuario1", // Reemplaza con el NIT del usuario si lo tienes disponible
+        usuario_nit: user, // Reemplaza con el NIT del usuario si lo tienes disponible
         estado: false, // Ajusta según sea necesario
         sugerencia: null,
         url_before: urls_before,
@@ -71,14 +72,12 @@ function FormModal({ show, handleClose, id }) {
       const response = await fetchPost('https://mantenimientoautosbackend.onrender.com/mantenimientos/AddRegister', reportData);
 
       if (response) {
-      console.log('Reporte enviado con éxito');
       handleClose();
       clearForm(); // Limpiar el formulario y cerrar el modal
     } else {
       alert(`Error al enviar el reporte`);
      }
     } catch (error) {
-      console.error('Error al subir archivos:', error);
       alert('Ocurrió un error al subir las imágenes. Por favor, intenta de nuevo.');
     }
   };

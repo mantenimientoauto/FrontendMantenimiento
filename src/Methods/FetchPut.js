@@ -14,7 +14,6 @@ const fetchPut = async (url, data) => {
   
       return await response.json();
     } catch (error) {
-      console.error('Error in PUT request:', error);
       throw error;
     }
   }

@@ -10,7 +10,7 @@ import { Container } from 'react-bootstrap';
 function Home () {
     const navigate = useNavigate(); // Inicializa el hook useNavigate para la navegación
     const { isAdmin, handleLogout } = useContext(AuthContext);
-    
+    const nombre = localStorage.getItem('nombre')
     // Función para manejar el cierre de sesión
 
     const handleLogoutClick = () => {
@@ -32,7 +32,8 @@ function Home () {
                 {/* Columna para mostrar si es administrador */}
                 <Col sm={12} md={2} className="d-flex justify-content-center">
                     {/* Condición para mostrar si es administrador */}
-                    {isAdmin && <p className="fs-5 m-3 pt-2 fw-semibold text-wrap">Administrador</p>}
+                    {isAdmin ? <p className="fs-5 m-3 pt-2 fw-semibold text-wrap">Administrador:({nombre})</p>:
+                    <p className="fs-4 m-3 pt-2 fw-semibold text-wrap">{nombre}</p>}
 
                 </Col>
             </Row>

@@ -26,8 +26,8 @@ function Naipes({ url }) {
     const fetchDatos = async () => {
       try {
         const data = await fetchGet(url);
-        // const countReports = await getReportCounts();
-        // setReportsCount(countReports)
+        const countReports = await getReportCounts();
+        setReportsCount(countReports)
         setDatos(data);
         setFilteredDatos(data);
         setLoading(false);

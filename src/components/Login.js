@@ -23,12 +23,12 @@ const Login = () => {
       });
       
       localStorage.setItem('token', data.token); //
+      localStorage.setItem('nombre', data.user.nit)
       const isAdmin = data.user.rol === 'admin';
       handleAuthentication(isAdmin);
       navigate('/home');
       
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
       alert('Credenciales incorrectas o error de red');
     } finally {
       setIsLoading(false);
