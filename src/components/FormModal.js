@@ -4,6 +4,7 @@ import { uploadFile } from "../Methods/config_img";
 import fetchPost from '../Methods/FetchPost';
 
 function FormModal({ show, handleClose, id }) {
+
   // Estados para los campos del formulario y las imágenes seleccionadas
   const [description, setDescription] = useState('');
   const [nombre, setNombre] = useState('');
@@ -69,15 +70,13 @@ function FormModal({ show, handleClose, id }) {
 
       const response = await fetchPost('https://mantenimientoautosbackend.onrender.com/mantenimientos/AddRegister', reportData);
 
-      if (response.ok) {
-        console.log('Reporte enviado con éxito:');
-        handleClose();
-        clearForm(); // Limpiar el formulario y cerrar el modal
-      } else {
-        const errorData = await response.json();
-        console.error('Error al enviar el reporte:', errorData);
-        alert(`Error al enviar el reporte: ${errorData.error || 'Error en la solicitud'}`);
-      }
+      if (response) {
+      console.log('Reporte enviado con éxito');
+      handleClose();
+      clearForm(); // Limpiar el formulario y cerrar el modal
+    } else {
+      alert(`Error al enviar el reporte`);
+     }
     } catch (error) {
       console.error('Error al subir archivos:', error);
       alert('Ocurrió un error al subir las imágenes. Por favor, intenta de nuevo.');

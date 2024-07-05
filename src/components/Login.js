@@ -21,7 +21,7 @@ const Login = () => {
         nit: username,
         contrasena: password
       });
-    
+      
       localStorage.setItem('token', data.token); //
       const isAdmin = data.user.rol === 'admin';
       handleAuthentication(isAdmin);

@@ -7,14 +7,20 @@ const fetchPost = async (url, data) => {
       },   
       body: JSON.stringify(data)
     });
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    
+    // Verificar si la respuesta es válida antes de parsearla
+    const contentType = response.headers.get('content-type');
+    if (!response.ok || !contentType || !contentType.includes('application/json')) {
+      const errorMessage = await response.text(); // Obtener el texto del error
+      throw new Error(`Error: ${response.statusText} - ${errorMessage}`);
     }
+
     return await response.json();
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
     throw error;
   }
 };
+
 export default fetchPost;
 

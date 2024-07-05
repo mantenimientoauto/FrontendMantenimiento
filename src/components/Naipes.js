@@ -5,7 +5,7 @@ import FormModal from './FormModal';
 import fetchGet from '../Methods/FetchGet';
 import { useNavigate } from 'react-router-dom';
 import SearchReport from './SearchReport';
-import getReportCounts from "../Methods/conteo.js"
+import getReportCounts from '../Methods/conteo.js';
 
 const ITEMS_PER_PAGE = 12;
 const MAX_PAGES_DISPLAYED = 5;
@@ -21,10 +21,13 @@ function Naipes({ url }) {
   const [reportsCount, setReportsCount] = useState({});
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const fetchDatos = async () => {
       try {
         const data = await fetchGet(url);
+        // const countReports = await getReportCounts();
+        // setReportsCount(countReports)
         setDatos(data);
         setFilteredDatos(data);
         setLoading(false);

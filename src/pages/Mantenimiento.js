@@ -20,7 +20,7 @@ function Mantenimiento() {
   const [reports, setReports] = useState([]);
   const [selectedDato, setSelectedDato] = useState(null); 
   const { isAdmin } = useContext(AuthContext);
-
+  
   // Obtener los datos de forma asíncrona
   useEffect(() => {
     if (dato.placa) {
