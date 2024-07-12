@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'; // Importa el hook useNavigate d
 import { Col, Row } from "react-bootstrap"; // Importa los componentes Col y Row de react-bootstrap
 import { AuthContext } from '../context/AuthContext';
 import { Container } from 'react-bootstrap';
+import Image from 'react-bootstrap/Image';
 
 // Define el componente Home
 function Home () {
@@ -33,7 +34,7 @@ function Home () {
                 <Col sm={12} md={2} className="d-flex justify-content-center">
                     {/* Condición para mostrar si es administrador */}
                     {isAdmin ? <p className="fs-5 m-3 pt-2 fw-semibold text-wrap">Administrador:({nombre})</p>:
-                    <p className="fs-4 m-3 pt-2 fw-semibold text-wrap">{nombre}</p>}
+                    <p className="fs-4 m-3 pt-2 fw-semibold text-wrap"> <Image src="https://firebasestorage.googleapis.com/v0/b/images-6d562.appspot.com/o/images_mantenimiento%2Fusuario.png?alt=media&token=379901c5-3817-4531-9f69-ed5157a80ff1" alt='Logo' thumbnail  style={{ width: '35px', height: '35px', objectFit: 'cover' }} /> {nombre}</p>}
 
                 </Col>
             </Row>

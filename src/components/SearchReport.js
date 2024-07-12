@@ -22,7 +22,7 @@ function SearchReport({ onSearch }) {
     <Container>
       <Row>
         <Col md={12} className='d-flex justify-content-center mt-5'>
-          <Image src="https://i.imgur.com/DzS1R1X.jpg" alt='Logo' thumbnail />
+          <Image src="https://firebasestorage.googleapis.com/v0/b/images-6d562.appspot.com/o/images_mantenimiento%2FLOGO.jpeg?alt=media&token=fec171ef-139d-4431-9669-0edf07ffa17a" alt='Logo' thumbnail  style={{ width: '620px', height: '450px', objectFit: 'cover' }} />
         </Col>
       </Row>
       <Row>

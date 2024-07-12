@@ -42,7 +42,7 @@ const Login = () => {
           <div className="card custom-gray shadow-lg p-3 mb-5 bg-white rounded">
             <div className="card-body">
               <div className='d-flex justify-content-center mt-1 pb-4'>
-                <img src="https://i.imgur.com/DzS1R1X.jpg" alt='Logo' className='custom-size' />
+                <img src="https://firebasestorage.googleapis.com/v0/b/images-6d562.appspot.com/o/images_mantenimiento%2FLOGO.jpeg?alt=media&token=fec171ef-139d-4431-9669-0edf07ffa17a" alt='Logo' className='custom-size' />
               </div>
               <h6>REPORTES DE MANTENIMIENTO JCM S.A.S.</h6>
               <form onSubmit={handleLogin}>
