@@ -5,17 +5,21 @@ import Login from './components/Login';
 import Home from './pages/home';
 import Mantenimiento from './pages/Mantenimiento';
 import AuthProvider, {AuthContext} from './context/AuthContext';
+import keepAwake from './Methods/keepAwake';
 
 function App() {
+  React.useEffect(() => {
+    keepAwake();
+  }, []);
 
   return (
     <AuthProvider>
       <Router>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/home" element={<ProtectedRoute component={Home} />} />
-            <Route path="/mantenimiento" element={<ProtectedRoute component={Mantenimiento} />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<ProtectedRoute component={Home} />} />
+          <Route path="/mantenimiento" element={<ProtectedRoute component={Mantenimiento} />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );
@@ -28,6 +32,5 @@ const ProtectedRoute = ({ component: Component }) => {
     </AuthContext.Consumer>
   );
 };
-
 
 export default App;
