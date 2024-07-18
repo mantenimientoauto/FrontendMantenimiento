@@ -27,6 +27,7 @@ function FormUser({ show, handleClose }) {
       if (response) {
         handleClose();
         clearForm();
+        alert('Usuario creados');
       } else {
         alert('Error al crear el usuario.');
       }
