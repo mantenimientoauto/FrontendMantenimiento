@@ -28,7 +28,7 @@ function SearchReport({ onSearch }) {
             alt='Logo'
             thumbnail
             className="img-fluid"
-            style={{ maxWidth: '50%', height: 'auto' }}
+            style={{ maxWidth: '60%', height: 'auto' }}
           />
         </Col>
       </Row>
