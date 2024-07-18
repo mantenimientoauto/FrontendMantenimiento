@@ -34,7 +34,7 @@ return (
       return (
         <Col sm={12} md={6} lg={4} xl={3} key={dato.id || dato.item} className="d-flex justify-content-center mb-4">
           <Card style={{ width: '18rem' }} className='mt-5 p-3'>
-          <div style={{ width: '250px', height: '250px', overflow: 'hidden', margin: '0 auto', position: 'relative' }}>
+          <div style={{ width: '200px', height: '200px', overflow: 'hidden', margin: '0 auto', position: 'relative' }}>
             {!dato.dir_img && (
                 <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-20%)', backgroundColor: 'rgba(0, 0, 0, 0.8)', color: '#fff', padding: '2px 10px', borderRadius: '5px', zIndex: '2' }}>
                   <small>{showAfterImage && dato.url_after ? 'Después' : 'Antes'}</small>
@@ -44,7 +44,7 @@ return (
                   variant="top"
                   src={showAfterImage && dato.url_after ? dato.url_after : dato.dir_img || dato.url_before} // Aquí se asegura de mostrar url_before si dir_img no está presente
                   alt='Imagen carro'
-                  style={{ objectFit: 'cover', width: '250px', height: '250px' }}
+                  style={{ objectFit: 'cover', width: '200px', height: '200px' }}
                 />
                 {/* Flecha para cambiar imagen en el lateral derecho */}
                 {dato.url_after && (
