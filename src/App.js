@@ -5,12 +5,8 @@ import Login from './components/Login';
 import Home from './pages/home';
 import Mantenimiento from './pages/Mantenimiento';
 import AuthProvider, {AuthContext} from './context/AuthContext';
-import keepAwake from './Methods/keepAwake';
 
 function App() {
-  React.useEffect(() => {
-    keepAwake();
-  }, []);
 
   return (
     <AuthProvider>
