@@ -79,10 +79,11 @@ function Mantenimiento() {
     const doc = new jsPDF();
   
     // Configurar la tabla para el PDF
-    const tableColumn = ['Titulo', 'Descripción','Solución','Tecnico', 'Estado','Fecha'];
+    const tableColumn = ['Usuario','Titulo', 'Descripción','Solución','Tecnico', 'Estado','Fecha'];
       
     const tableRows = reports.map(report => [
         
+        report.nombre_nit,
         report.nombre,
         report.detalles,
         report.sugerencia,
