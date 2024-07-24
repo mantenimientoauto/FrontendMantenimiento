@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
@@ -14,22 +13,8 @@ const firebaseConfig = {
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 export const storage = getStorage(app); // Este objeto nos permite interactuar con las imagenes
 
-/**
- * Función para autenticar al usuario con un token personalizado
- * @param {string} token - El token personalizado
- */
-const authenticateWithToken = async (token) => {
-  try {
-    await signInWithCustomToken(auth, token);
-    console.log('Usuario autenticado con el token personalizado');
-  } catch (error) {
-    console.error('Error en la autenticación con el token personalizado:', error);
-  }
-
-};
 
 
 /**
@@ -37,15 +22,7 @@ const authenticateWithToken = async (token) => {
  * @param {File} file - El archivo a subir
  * @returns {Promise<string>} - URL de descarga del archivo
  */
-export async function uploadFile(file, token) {
-
-    // Autenticarse antes de intentar subir el archivo
-    await authenticateWithToken(token);
-    
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error('El usuario no está autenticado');
-    }
+export async function uploadFile(file) {
 
     const date = new Date();
     const timestamp = date.toISOString().replace(/[-:.]/g, '');

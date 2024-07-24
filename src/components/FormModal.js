@@ -11,7 +11,7 @@ function FormModal({ show, handleClose, id }) {
   const [files, setFiles] = useState(null);
   const [imagePreviews, setImagePreviews] = useState(null);
   const user = localStorage.getItem('nombre')
-  const token = localStorage.getItem('token')
+
   // Manejadores de cambios en los campos del formulario
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
@@ -49,7 +49,7 @@ function FormModal({ show, handleClose, id }) {
         return;
       }
 
-      const urls_before = await uploadFile(files,token); // Subir los archivos y obtener las URLs de descarga
+      const urls_before = await uploadFile(files); // Subir los archivos y obtener las URLs de descarga
       //console.log(urls_before)
       // Validar otros datos necesarios antes de enviar al backend
       if (!description || !id || !nombre) {
@@ -68,15 +68,15 @@ function FormModal({ show, handleClose, id }) {
         url_after: null,
         nombre: nombre
       };
-      //console.log(reportData)
-    //   const response = await fetchPost('https://mantenimientoautosbackend.onrender.com/mantenimientos/AddRegister', reportData);
+    
+      const response = await fetchPost('https://mantenimientoautosbackend.onrender.com/mantenimientos/AddRegister', reportData);
 
-    //   if (response) {
-    //   handleClose();
-    //   clearForm(); // Limpiar el formulario y cerrar el modal
-    // } else {
-    //   alert(`Error al enviar el reporte`);
-    //  }
+      if (response) {
+      handleClose();
+      clearForm(); // Limpiar el formulario y cerrar el modal
+    } else {
+      alert(`Error al enviar el reporte`);
+     }
     } catch (error) {
       alert('No se puede enviar datos por el momento.');
     }

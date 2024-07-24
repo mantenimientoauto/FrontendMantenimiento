@@ -20,7 +20,7 @@ function Mantenimiento() {
   const [reports, setReports] = useState([]);
   const [selectedDato, setSelectedDato] = useState(null); 
   const { isAdmin } = useContext(AuthContext);
-  
+  const nombre_user = localStorage.getItem('nombre')
   // Obtener los datos de forma asíncrona
   useEffect(() => {
     if (dato.placa) {
@@ -83,7 +83,7 @@ function Mantenimiento() {
       
     const tableRows = reports.map(report => [
         
-        report.nombre_nit,
+        nombre_user,
         report.nombre,
         report.detalles,
         report.sugerencia,
